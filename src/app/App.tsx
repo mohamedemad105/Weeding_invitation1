@@ -327,26 +327,12 @@ function MusicPlayer({ autoPlay }: { autoPlay: boolean }) {
   const started = useRef(false);
 
   useEffect(() => {
-  const startMusic = () => {
-    if (!audioRef.current || started.current) return;
-
-    started.current = true;
-    audioRef.current.volume = volume;
-
-    audioRef.current
-      .play()
-      .then(() => setPlaying(true))
-      .catch(console.error);
-
-    document.removeEventListener("click", startMusic);
-  };
-
-  document.addEventListener("click", startMusic);
-
-  return () => {
-    document.removeEventListener("click", startMusic);
-  };
-}, [volume]);
+    if (autoPlay && !started.current && audioRef.current) {
+      started.current = true;
+      audioRef.current.volume = volume;
+      audioRef.current.play().then(() => setPlaying(true)).catch(() => {});
+    }
+  }, [autoPlay]);
 
   const toggle = () => {
     const a = audioRef.current;
@@ -362,7 +348,7 @@ function MusicPlayer({ autoPlay }: { autoPlay: boolean }) {
 
   return (
     <>
-      <audio ref={audioRef} loop src="/Albumaty.Com_Tamer_Ashour_Khalini.mp3" />
+      <audio ref={audioRef} loop src="public/Albumaty.Com_Tamer_Ashour_Khalini.mp3" />
       <motion.div
         className="fixed bottom-6 left-6 z-[200] flex flex-col-reverse items-start gap-2"
         initial={{ opacity: 0, y: 20 }}
