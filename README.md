@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
   # Create requested feature
 
@@ -9,3 +10,6 @@
 
   Run `npm run dev` to start the development server.
   
+=======
+# Weeding_invitation1
+>>>>>>> 2e1cf55edbe7496331538a8b93def78557c38a59
