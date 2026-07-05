@@ -327,12 +327,26 @@ function MusicPlayer({ autoPlay }: { autoPlay: boolean }) {
   const started = useRef(false);
 
   useEffect(() => {
-    if (autoPlay && !started.current && audioRef.current) {
-      started.current = true;
-      audioRef.current.volume = volume;
-      audioRef.current.play().then(() => setPlaying(true)).catch(() => {});
-    }
-  }, [autoPlay]);
+  const startMusic = () => {
+    if (!audioRef.current || started.current) return;
+
+    started.current = true;
+    audioRef.current.volume = volume;
+
+    audioRef.current
+      .play()
+      .then(() => setPlaying(true))
+      .catch(console.error);
+
+    document.removeEventListener("click", startMusic);
+  };
+
+  document.addEventListener("click", startMusic);
+
+  return () => {
+    document.removeEventListener("click", startMusic);
+  };
+}, [volume]);
 
   const toggle = () => {
     const a = audioRef.current;
